@@ -75,7 +75,7 @@ RCLCPP_INFO(LOGGER, "moved to start");
       
     
 
-
+move_group.setStartState(*move_group.getCurrentState());
 
 
 
@@ -88,22 +88,27 @@ geometry_msgs::msg::Pose target_pose1;
   //target_pose1.orientation.y = q.coeffs()[1];
   //target_pose1.orientation.z = q.coeffs()[1];
 
-  target_pose1.position.x = x;
-  waypoints.push_back(target_pose1);
+  //target_pose1.position.x = x;
+  //waypoints.push_back(target_pose1);
   target_pose1.position.y = y;
   waypoints.push_back(target_pose1);
-  target_pose1.position.z = z;
-  waypoints.push_back(target_pose1);
+  //target_pose1.position.z = z;
+  //waypoints.push_back(target_pose1);
 
 moveit_msgs::msg::RobotTrajectory trajectory;
 const double jump_threshold = 0.2;
-const double eef_step = 0.1;
+const double eef_step = 0.01;
 double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
-RCLCPP_INFO(LOGGER, "Visualizing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
-
+RCLCPP_INFO(LOGGER, "Visualizing plan (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
+if(fraction==1){
   //readd later //////bool success = (move_group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  RCLCPP_INFO(LOGGER, "executing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
 move_group.execute(trajectory); 
-
+}
+else
+{
+  RCLCPP_INFO(LOGGER, "failed to plan full path (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
+}
 
 executor.cancel();
 
