@@ -21,9 +21,9 @@ int main(int argc, char **argv)
     node->create_client<ur5e_interfaces::srv::Ur5eService>("move_function");
 
   auto request = std::make_shared<ur5e_interfaces::srv::Ur5eService::Request>();
-  request->x = atoll(argv[1]);
-  request->y = atoll(argv[2]);
-  request->y = atoll(argv[3]);
+  request->x = atof(argv[1]);
+  request->y = atof(argv[2]);
+  request->z = atof(argv[3]);
 
   while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {

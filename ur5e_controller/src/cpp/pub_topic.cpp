@@ -25,19 +25,17 @@ class MinimalPublisher : public rclcpp::Node
   private:
     void timer_callback()
     {
-      
+      if (argc != 4) {
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "send coords to controller");
+      return 1;
+  }
       rclcpp::sleep_for(50000ms);
       auto message = std_msgs::msg::Float32MultiArray();
-      message.data = {0.3,0.3,0.9};
+      message.data = {atof(argv[1]),atof(argv[2]),atof(argv[3])};
       RCLCPP_INFO(this->get_logger(), "Publishing: 'x = %f',y = %f',z = %f'", message.data[0],message.data[1],message.data[2]);
       publisher_->publish(message);
 
-      
-      rclcpp::sleep_for(50000ms);
-      //auto message = std_msgs::msg::Float32MultiArray();
-      message.data = {0.6,0.6,0.3};
-      RCLCPP_INFO(this->get_logger(), "Publishing: 'x = %f',y = %f',z = %f'", message.data[0],message.data[1],message.data[2]);
-      publisher_->publish(message);
+
       
     
     }
@@ -49,7 +47,7 @@ class MinimalPublisher : public rclcpp::Node
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<MinimalPublisher>());
+  rclcpp::spinOnce(std::make_shared<MinimalPublisher>());
   rclcpp::shutdown();
   return 0;
 }

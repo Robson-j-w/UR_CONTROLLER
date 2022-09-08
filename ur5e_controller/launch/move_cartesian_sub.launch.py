@@ -321,10 +321,13 @@ def generate_launch_description():
         "trajectory_execution.allowed_goal_duration_margin": 0.5,
         "trajectory_execution.allowed_start_tolerance": 0.01,
     }
+
+    
+
     
     move_function= Node(
         package="ur5e_controller",
-        executable="move_function",
+        executable="move_cartesian_sub",
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -333,6 +336,7 @@ def generate_launch_description():
             trajectory_execution,
             moveit_controllers,
             planning_scene_monitor_parameters,
+            
         ],
         output="screen",
     )   

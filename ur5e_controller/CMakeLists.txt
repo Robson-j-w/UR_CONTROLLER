@@ -19,6 +19,7 @@ endif()
 find_package(moveit_common REQUIRED)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
 find_package(ur_robot_driver REQUIRED)
 find_package(ur_bringup REQUIRED)
 find_package(ur_controllers REQUIRED)
@@ -48,6 +49,7 @@ find_package(ur5e_interfaces REQUIRED)
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ament_cmake
   rclcpp
+  rclpy
   rclcpp_action
   tf2_geometry_msgs
   tf2_ros
@@ -72,40 +74,77 @@ install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}/)
 
-  add_executable(test_move src/test_move.cpp)
+
+
+  add_executable(test_move src/cpp/test_move.cpp)
   target_include_directories(test_move
     PUBLIC include)
   ament_target_dependencies(test_move
     ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
 
-  add_executable(move_function src/move_function.cpp)
+  add_executable(move_function src/cpp/move_function.cpp)
    target_include_directories(move_function
     PUBLIC include)
   ament_target_dependencies(move_function
       ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
 
- add_executable(pub src/pub.cpp)
+  add_executable(pub src/cpp/pub.cpp)
       target_include_directories(pub
        PUBLIC include)
      ament_target_dependencies(pub
          ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
 
-         add_executable(move_function_mcpp src/move_function_mcpp.cpp)
+  add_executable(move_function_mcpp src/cpp/move_function_mcpp.cpp)
          target_include_directories(move_function_mcpp
           PUBLIC include)
         ament_target_dependencies(move_function_mcpp
             ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
 
-            add_executable(move_function_tutorial src/move_group_interface_tutorial.cpp)
+  add_executable(move_function_tutorial src/cpp/move_group_interface_tutorial.cpp)
          target_include_directories(move_function_tutorial
           PUBLIC include)
         ament_target_dependencies(move_function_tutorial
             ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
 
+  add_executable(move_function2 src/new/move.cpp)
+            target_include_directories(move_function2
+             PUBLIC include)
+           ament_target_dependencies(move_function2
+               ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+
+
+  add_executable(move_cartesian src/new/move_cartesian.cpp)
+               target_include_directories(move_cartesian
+                PUBLIC include)
+              ament_target_dependencies(move_cartesian
+                  ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+  add_executable(move_cartesian_service src/new/move_cartesian_service.cpp)
+                  target_include_directories(move_cartesian_service
+                   PUBLIC include)
+                 ament_target_dependencies(move_cartesian_service
+                     ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+  # add_executable(move_cartesian_sub src/new/move_cartesian_sub.cpp)
+  #                    target_include_directories(move_cartesian_sub
+  #                     PUBLIC include)
+  #                   ament_target_dependencies(move_cartesian_sub
+  #                       ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+  # add_executable(pub_t src/cpp/pub_topic.cpp)
+  #                   target_include_directories(pub_t
+  #                   PUBLIC include)
+  #                 ament_target_dependencies(pub_t
+  #                     ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+
+
+
   install(TARGETS
   test_move
+  move_cartesian
+  # move_cartesian_sub
+  move_cartesian_service
   move_function
+  move_function2
   pub
+  # pub_t
   move_function_mcpp
   move_function_tutorial
   DESTINATION lib/${PROJECT_NAME})
